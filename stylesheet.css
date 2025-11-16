@@ -57,6 +57,10 @@ grey shade: #1b1b1b
     font-family: Arial, Helvetica, sans-serif;
 }
 
+html {
+    font-size: 62.5%;
+}
+
 :root {
 
     --primary-tint: #aa9de3;
@@ -72,12 +76,12 @@ grey shade: #1b1b1b
     --grey-color: #363636;
     --grey-shade: #1b1b1b;
     
-    --font-h1: 62px;
-    --font-h2: 48px;
-    --font-h3: 40px;
-    --font-h4: 28px;
-    --font-normal: 20px;
-    --font-small: 16px;
+    --font-h1: 6.2rem;
+    --font-h2: 4.8rem;
+    --font-h3: 4.0rem;
+    --font-h4: 2.8rem;
+    --font-normal: 2.0rem;
+    --font-small: 1.6rem;
 
     --letter-spacing-tight: -2px;
     --line-height-head: 1.2;
@@ -85,7 +89,7 @@ grey shade: #1b1b1b
 
     --font-weight-bold: 700;
     --font-weight-normal: 400;
-    --font-weight-small: 300px;
+    --font-weight-small: 300;
 
 }
 
@@ -144,21 +148,21 @@ body {
 
 .nav-bar {
     background-color: var(--secondary-shade);
-    padding-top: 5px;
-    padding-left: 30px;
-    margin-bottom: 150px;   
+    padding-top: 0.5rem;
+    padding-left: 3rem;
+    margin-bottom: 15rem;   
     display: flex;
-    gap: 15px;
-    box-shadow: 2px 2px 3px 0px var(--secondary-tint-shadow);
+    gap: 1.5rem;
+    box-shadow: 0.2rem 0.2rem 0.3rem 0.0rem var(--secondary-tint-shadow);
 }
 
 .AU-logo {
-    height: 100px;
+    height: 10rem;
 }
 
 .nav-note-1 {
     line-height: 1;
-    margin-top: 10px;
+    margin-top: 1rem;
 }
 
 .nav-note-1, .nav-note-2 {
@@ -167,59 +171,61 @@ body {
 
 header .welcome-head, .welcome-note {
     text-align: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .welcome-head {
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 3px var(--grey-tint-3);
+    margin-bottom: 2rem;
+    text-shadow: 0.2rem 0.2rem 0.3rem var(--grey-tint-3);
 }
 
 header {
-    margin-bottom: 120px;
+    margin-bottom: 12rem;
     background-color: white;
 }
 
 .feature-section {
-    margin-bottom: 80px;
+    margin-bottom: 8rem;
 }
 
 .section-head {
-    margin-bottom: 20px;
+    margin-bottom: 2rem;
     text-align: center;
-    text-shadow: 1px 1px 3px var(--grey-tint-3);
+    text-shadow: 0.1rem 0.1rem 0.3rem var(--grey-tint-3);
 }
 
 .card-container {
     width: 85vw;
     background-color: var(--secondary-tint);
-    box-shadow: 2px 2px 5px 2px var(--grey-tint-3);
+    box-shadow: 0.2rem 0.2rem 0.5rem 0.2rem var(--grey-tint-3);
     margin: 0 auto;
     border-radius: 10px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding-bottom: 50px;
+    padding-bottom: 5rem;
 }
 
 .card {
-    margin: 50px 50px 0px 50px;
+    margin: 5rem 5rem 0px 5rem;
     background-color: white;
     border-radius: 10px;
-    min-height: 100px;
-    max-width: 500px;
+    min-height: 10rem;
+    max-width: 50rem;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 3px 3px 3px 3px var(--secondary-tint-shadow);
+    box-shadow: 0.3rem 0.3rem 0.3rem 0.3rem var(--secondary-tint-shadow);
 }
 
 .card:hover {
-    box-shadow: 1.5px 1.5px 3px 2px var(--secondary-shade);
+    box-shadow: 0.15rem 0.15rem 0.3rem 0.2rem var(--secondary-shade);
 }
 
-.topic-5 {
-    padding: 10px;
+.subtopic-title {
+    padding: 1rem;
 }
 
 .card-container .card .subtopic-list {
@@ -227,12 +233,12 @@ header {
 }
 
 .card h4 {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 .card .sub-topic-link {
-    padding-bottom: 10px;
+    padding-bottom: 1rem;
 }
 
 .card li:hover {
@@ -243,8 +249,8 @@ header {
 footer {
     background-color: var(--grey-tint-1);
     text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 /* dropdown toggler */
@@ -256,3 +262,73 @@ footer {
 .card.open .subtopic-list {
     display: block;
 }
+
+@media (max-width: 91rem) {
+    /* 91rem = 1456px */
+    html {
+        font-size: 56.25%;
+    }
+}
+
+@media (max-width: 64rem) {
+    /* 64rem = 1024px */
+    html {
+        font-size: 50%;
+    }
+}
+
+@media (max-width: 56rem) {
+    /* 56rem = 896px */
+    html {
+        font-size: 43.75%;
+    }
+}
+
+@media (max-width: 45rem) {
+    /* 45rem = 720px */
+    .card-container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 75vw;
+    }
+    .card {
+        width: 50rem;
+    }
+}
+
+@media (max-width: 40rem) {
+    /* 40rem = 640px */
+    html {
+        font-size: 37.5%;
+    }
+
+    .card-container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 2rem;
+        width: 75vw;
+    }
+
+    .card {
+        width: 50rem;
+    }
+}
+
+@media (max-width: 30rem) {
+    /* 30rem = 480px */
+    html {
+        font-size: 31.25%;
+    }
+}
+
+
+@media (max-width: 24rem) {
+    /* 24rem = 384px */
+    html {
+        font-size: 28.125%;
+    }
+}
+
+
