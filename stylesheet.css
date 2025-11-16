@@ -44,6 +44,7 @@ Secondary shade: #27374d
 
 grey tint 1:  #efefef
 grey tint 2:f0f0f0
+grey tint 3: #949494
 grey color: #363636
 grey shade: #1b1b1b
 
@@ -67,7 +68,7 @@ grey shade: #1b1b1b
     --secondary-shade: #27374d;
     --grey-tint-1: #efefef;
     --grey-tint-2: #f0f0f0;
-    --grey-tint-3: #a8a8a8;
+    --grey-tint-3: #949494;
     --grey-color: #363636;
     --grey-shade: #1b1b1b;
     
@@ -90,7 +91,7 @@ grey shade: #1b1b1b
 
 a {
     text-decoration: none;
-    display: inline-block;
+    display: block;
 }
 
 ul {
@@ -141,17 +142,23 @@ body {
     background-color: white;
 }
 
-.welcome-head {
-    text-shadow: 2px 2px 3px var(--grey-tint-3);
-}
-.section-head {
-    text-shadow: 1px 1px 3px var(--grey-tint-3);
-}
-
 .nav-bar {
     background-color: var(--secondary-shade);
-    padding-bottom: 22px;
-    margin-bottom: 150px;    
+    padding-top: 5px;
+    padding-left: 30px;
+    margin-bottom: 150px;   
+    display: flex;
+    gap: 15px;
+    box-shadow: 2px 2px 3px 0px var(--secondary-tint-shadow);
+}
+
+.AU-logo {
+    height: 100px;
+}
+
+.nav-note-1 {
+    line-height: 1;
+    margin-top: 10px;
 }
 
 .nav-note-1, .nav-note-2 {
@@ -164,6 +171,7 @@ header .welcome-head, .welcome-note {
 
 .welcome-head {
     margin-bottom: 20px;
+    text-shadow: 2px 2px 3px var(--grey-tint-3);
 }
 
 header {
@@ -176,8 +184,9 @@ header {
 }
 
 .section-head {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     text-align: center;
+    text-shadow: 1px 1px 3px var(--grey-tint-3);
 }
 
 .card-container {
@@ -201,11 +210,20 @@ header {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    cursor: pointer;
     box-shadow: 3px 3px 3px 3px var(--secondary-tint-shadow);
 }
 
+.card:hover {
+    box-shadow: 1.5px 1.5px 3px 2px var(--secondary-shade);
+}
+
+.topic-5 {
+    padding: 10px;
+}
+
 .card-container .card .subtopic-list {
-    display: block;
+    display: none;
 }
 
 .card h4 {
@@ -227,4 +245,14 @@ footer {
     text-align: center;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+/* dropdown toggler */
+
+.subtopic-list {
+    display: none;
+}
+
+.card.open .subtopic-list {
+    display: block;
 }
