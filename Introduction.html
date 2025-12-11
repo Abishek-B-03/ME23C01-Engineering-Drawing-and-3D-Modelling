@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introduction to Quadrants with Animated Points</title>
+<style>
+body { font-family: Arial, sans-serif; background:white; color:black; display:flex; flex-direction:column; align-items:center; padding:20px;}
+h1 { margin-bottom:20px; }
+.container { display:flex; max-width:900px; gap:20px; }
+.sidebar { width:200px; border:1px solid #ccc; border-radius:10px; padding:10px; }
+.sidebar button { width:100%; margin:5px 0; padding:8px; cursor:pointer; border-radius:8px; border:1px solid #000; background:white; }
+.main { flex:1; border:1px solid #ccc; border-radius:10px; padding:20px; text-align:center; }
+.buttons { margin-top:20px; display:flex; gap:10px; }
+button.nav { padding:8px 16px; border-radius:10px; border:1px solid #000; background:white; cursor:pointer; }
+button.nav:disabled { opacity:0.5; cursor:not-allowed; }
+text { font-size:12px; }
+</style>
+</head>
+<body>
+
+<h1 style="text-align: center; display: inline-block;">Introduction to Quadrants</h1><a href="index.html" style="
+    display: inline-block;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    margin-left: 20px;
+    text-decoration: none;
+    background-color: #0ec58b;
+    border-radius: 5px;
+    font-size: 18px;
+    color: blue;
+    font-weight: 500;"
+    >Back to Home</a>
+
+<div class="container">
+<div class="sidebar">
+<p><strong>Select Quadrant</strong></p>
+<button onclick="selectQuadrant(1)">1st Quadrant</button>
+<button onclick="selectQuadrant(2)">2nd Quadrant</button>
+<button onclick="selectQuadrant(3)">3rd Quadrant</button>
+<button onclick="selectQuadrant(4)">4th Quadrant</button>
+</div>
+
+<div class="main">
+<svg id="plane" width="400" height="400"></svg>
+<div id="description" style="margin-top:10px; font-size:16px;"></div>
+
+<div class="buttons">
+<button id="prevBtn" class="nav" disabled>Previous</button>
+<button id="nextBtn" class="nav">Next</button>
+</div>
+</div>
+</div>
+
+<script>
+const svgNS = "http://www.w3.org/2000/svg";
+const plane = document.getElementById("plane");
+const description = document.getElementById("description");
+let steps = [];
+let currentStep = 0;
+
+function clearPlane(){ plane.innerHTML = ""; }
+
+// ------------------ DRAW AXES ------------------
+function drawAxes() {
+  const hp = document.createElementNS(svgNS,"line");
+  hp.setAttribute("x1",50); hp.setAttribute("y1",200);
+  hp.setAttribute("x2",350); hp.setAttribute("y2",200);
+  hp.setAttribute("stroke","black"); hp.setAttribute("stroke-width","2");
+  plane.appendChild(hp);
+
+  const vp = document.createElementNS(svgNS,"line");
+  vp.setAttribute("x1",200); vp.setAttribute("y1",50);
+  vp.setAttribute("x2",200); vp.setAttribute("y2",350);
+  vp.setAttribute("stroke","black"); vp.setAttribute("stroke-width","2");
+  plane.appendChild(vp);
+
+  const xLabel = document.createElementNS(svgNS,"text");
+  xLabel.setAttribute("x",360); xLabel.setAttribute("y",205);
+  xLabel.textContent = "HP"; plane.appendChild(xLabel);
+
+  const yLabel = document.createElementNS(svgNS,"text");
+  yLabel.setAttribute("x",205); yLabel.setAttribute("y",45);
+  yLabel.textContent = "VP"; plane.appendChild(yLabel);
+}
+
+// -------------- BASIC ELEMENT FUNCTIONS --------------
+function addLine(x1,y1,x2,y2){ 
+  const l=document.createElementNS(svgNS,"line");
+  l.setAttribute("x1",x1); l.setAttribute("y1",y1);
+  l.setAttribute("x2",x2); l.setAttribute("y2",y2);
+  l.setAttribute("stroke","black"); l.setAttribute("stroke-width","1");
+  plane.appendChild(l); 
+}
+
+function addCircle(x,y,color="black"){
+  const c=document.createElementNS(svgNS,"circle");
+  c.setAttribute("cx",x);
+  c.setAttribute("cy",y);
+  c.setAttribute("r",5);
+  c.setAttribute("fill",color);
+  plane.appendChild(c);
+}
+
+function addTextHorizontal(x,y,text){
+  const t=document.createElementNS(svgNS,"text");
+  t.setAttribute("x",x);
+  t.setAttribute("y",y);
+  t.setAttribute("font-size","12");
+  t.textContent=text;
+  plane.appendChild(t);
+}
+
+function addTextVertical(x,y,text){
+  const t=document.createElementNS(svgNS,"text");
+  t.setAttribute("x", x);
+  t.setAttribute("y", y);
+  t.setAttribute("transform", `rotate(-90 ${x} ${y})`);
+  t.setAttribute("font-size","12");
+  t.textContent = text;
+  plane.appendChild(t);
+}
+
+// ------------------ MAIN STEP CREATION ------------------
+function createSteps(x,y, quadrant){
+  steps = [];
+  const hpY = 200;
+  const vpX = 200;
+
+  let aboveBelow = (quadrant===1||quadrant===2) ? "Above HP" : "Below HP";
+  let frontBehind = (quadrant===1||quadrant===4) ? "In Front of VP" : "Behind VP";
+
+  steps.push(()=>{ drawAxes(); description.textContent="Axes drawn"; });
+
+  steps.push(()=>{ addCircle(x,y,"red"); description.textContent="Point placed (Red)"; });
+
+  steps.push(()=>{
+    addLine(x,y,x,hpY);
+    addCircle(x,hpY,"grey");
+    description.textContent="Projected to HP";
+  });
+
+  steps.push(()=>{
+    addLine(x,y,vpX,y);
+    addCircle(vpX,y,"grey");
+    description.textContent="Projected to VP";
+  });
+
+  steps.push(()=>{
+    addTextHorizontal(x+5,hpY-5,"a");  
+    addTextHorizontal(vpX+5,y-5,"a`");
+    description.textContent="Views labeled";
+  });
+
+  steps.push(()=>{
+    addTextVertical(x-10,(y+hpY)/2, aboveBelow);
+    addTextHorizontal((vpX+x)/2, y-10, frontBehind);
+    description.textContent="Dimension text added";
+  });
+}
+
+function showStep(stepIndex){
+  clearPlane();
+  for(let i=0;i<=stepIndex;i++){ steps[i](); }
+  document.getElementById("prevBtn").disabled = (stepIndex===0);
+  document.getElementById("nextBtn").disabled = (stepIndex===steps.length-1);
+}
+
+function selectQuadrant(q){
+  let x=0,y=0;
+  if(q===1){ x=250; y=100; }
+  if(q===2){ x=100; y=100; }
+  if(q===3){ x=100; y=300; }
+  if(q===4){ x=250; y=300; }
+  createSteps(x,y,q);
+  currentStep = 0;
+  showStep(currentStep);
+}
+
+document.getElementById("prevBtn").addEventListener("click",()=>{ 
+  if(currentStep>0){ currentStep--; showStep(currentStep); }
+});
+document.getElementById("nextBtn").addEventListener("click",()=>{ 
+  if(currentStep<steps.length-1){ currentStep++; showStep(currentStep); }
+});
+
+drawAxes();
+description.textContent="Select a quadrant to begin.";
+</script>
+
+</body>
+</html>

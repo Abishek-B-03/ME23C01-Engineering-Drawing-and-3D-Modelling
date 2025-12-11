@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4th Quadrant — Below HP & In Front of VP</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: white; color: black; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+    h1 { margin-bottom: 20px; }
+    .container { display: flex; max-width: 900px; gap: 20px; }
+    .sidebar { width: 200px; border: 1px solid #ccc; border-radius: 10px; padding: 10px; }
+    .sidebar ul { list-style: decimal inside; padding-left: 0; }
+    .sidebar li { margin: 5px 0; }
+    .sidebar li.active { font-weight: bold; }
+    .main { flex: 1; border: 1px solid #ccc; border-radius: 10px; padding: 20px; text-align: center; }
+    .buttons { margin-top: 20px; display: flex; gap: 10px; }
+    button { padding: 8px 16px; border-radius: 10px; border: 1px solid #000; background: white; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>4th Quadrant — Below HP & In Front of VP</h1><a href="index.html" style="
+    display: inline-block;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    margin-left: 20px;
+    text-decoration: none;
+    background-color: #0ec58b;
+    border-radius: 5px;
+    font-size: 18px;
+    color: blue;
+    font-weight: 500;"
+    >Back to Home</a>
+  <div class="container">
+    <div class="sidebar">
+      <p><strong>Steps</strong></p>
+      <ul id="stepsList">
+        <li>Draw XY line</li>
+        <li>Draw  Below HP dimension line</li>
+        <li>Label "Below HP" on dimension line</li>
+        <li>Draw point a` on Below HP</li>
+        <li>Draw  In Front of VP dimension line</li>
+        <li>Label "In Front of VP" on dimension line</li>
+        <li>Draw point a on In Front of VP</li>
+        <li>Connect both points to XY line</li>
+      </ul>
+    </div>
+
+    <div class="main">
+      <svg id="diagram" width="450" height="300"></svg>
+      <div id="stepDescription" style="margin-top:10px; font-size:16px;"></div>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button id="prevBtn">Previous</button>
+    <button id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    let step = 0;
+
+    const steps = [
+      "Step 1: Draw XY line",
+      "Step 2: Draw Below HP  dimension line",
+      "Step 3: Label Below HP",
+      "Step 4: Draw point a`",
+      "Step 5: Draw In Front of VP dimension line",
+      "Step 6: Label In Front of VP",
+      "Step 7: Draw point a",
+      "Step 8: Connect both points to XY"
+    ];
+
+    const svg = document.getElementById("diagram");
+    const stepDesc = document.getElementById("stepDescription");
+    const stepList = document.getElementById("stepsList").children;
+
+    function addText(x,y,text){
+      const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+      t.setAttribute("x",x); t.setAttribute("y",y);
+      t.setAttribute("font-size", "12");
+      svg.appendChild(t);
+      t.textContent=text;
+    }
+
+    function arrow(x,y,dir){
+      const p=document.createElementNS("http://www.w3.org/2000/svg","polygon");
+      if(dir==="up") p.setAttribute("points",`${x},${y} ${x-5},${y+10} ${x+5},${y+10}`);
+      if(dir==="down") p.setAttribute("points",`${x},${y} ${x-5},${y-10} ${x+5},${y-10}`);
+      svg.appendChild(p);
+    }
+
+    function drawStep(){
+      svg.innerHTML="";
+      for(let i=0;i<stepList.length;i++) stepList[i].classList.remove("active");
+      stepList[step].classList.add("active");
+      stepDesc.textContent = steps[step];
+
+      // XY line + labels
+      if(step>=0){
+        const xy=document.createElementNS("http://www.w3.org/2000/svg","line");
+        xy.setAttribute("x1","50"); xy.setAttribute("y1","150");
+        xy.setAttribute("x2","400"); xy.setAttribute("y2","150");
+        xy.setAttribute("stroke","black"); xy.setAttribute("stroke-width","2");
+        svg.appendChild(xy);
+
+        addText(40,155,"X");
+        addText(410,155,"Y");
+      }
+
+      // Below HP dimension line
+      if(step>=1){
+        const l=document.createElementNS("http://www.w3.org/2000/svg","line");
+        l.setAttribute("x1","150"); l.setAttribute("y1","150");
+        l.setAttribute("x2","150"); l.setAttribute("y2","230");
+        l.setAttribute("stroke","black"); l.setAttribute("stroke-width","2");
+        svg.appendChild(l);
+        arrow(150,150,"up"); arrow(150,230,"down");
+      }
+
+      if(step>=2){
+        const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+        t.setAttribute("x",135); t.setAttribute("y",190);
+        t.setAttribute("transform","rotate(90 135 190)");
+        t.setAttribute("font-size","12");
+        t.textContent="Below HP";
+        svg.appendChild(t);
+      }
+
+      if(step>=3){
+        const c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+        c.setAttribute("cx","220"); c.setAttribute("cy","230"); c.setAttribute("r","4");
+        svg.appendChild(c);
+        addText(230,225,"a`");
+      }
+
+      // In Front of VP dimension line
+      if(step>=4){
+        const l=document.createElementNS("http://www.w3.org/2000/svg","line");
+        l.setAttribute("x1","300"); l.setAttribute("y1","150");
+        l.setAttribute("x2","300"); l.setAttribute("y2","260");
+        l.setAttribute("stroke","black"); l.setAttribute("stroke-width","2");
+        svg.appendChild(l);
+        arrow(300,150,"up"); arrow(300,260,"down");
+      }
+
+      if(step>=5){
+        const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+        t.setAttribute("x",315); t.setAttribute("y",210); // right side
+        t.setAttribute("transform","rotate(90 315 210)");
+        t.setAttribute("font-size","12");
+        t.textContent="In Front of VP";
+        svg.appendChild(t);
+      }
+
+      if(step>=6){
+        const c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+        c.setAttribute("cx","220"); c.setAttribute("cy","260"); c.setAttribute("r","4");
+        svg.appendChild(c);
+        addText(230,265,"a");
+      }
+
+      if(step>=7){
+        const l1=document.createElementNS("http://www.w3.org/2000/svg","line");
+        l1.setAttribute("x1","220"); l1.setAttribute("y1","230");
+        l1.setAttribute("x2","220"); l1.setAttribute("y2","150");
+        l1.setAttribute("stroke","black"); l1.setAttribute("stroke-width","1");
+        svg.appendChild(l1);
+
+        const l2=document.createElementNS("http://www.w3.org/2000/svg","line");
+        l2.setAttribute("x1","220"); l2.setAttribute("y1","260");
+        l2.setAttribute("x2","220"); l2.setAttribute("y2","150");
+        l2.setAttribute("stroke","black"); l2.setAttribute("stroke-width","1");
+        svg.appendChild(l2);
+      }
+    }
+
+    document.getElementById("nextBtn").addEventListener("click",()=>{ if(step<7){ step++; drawStep(); }});
+    document.getElementById("prevBtn").addEventListener("click",()=>{ if(step>0){ step--; drawStep(); }});
+
+    drawStep();
+  </script>
+</body>
+</html>

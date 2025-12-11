@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3rd Quadrant — Below HP & Behind VP</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: white; color: black; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+    h1 { margin-bottom: 20px; }
+    .container { display: flex; max-width: 900px; gap: 20px; }
+    .sidebar { width: 200px; border: 1px solid #ccc; border-radius: 10px; padding: 10px; }
+    .sidebar ul { list-style: decimal inside; padding-left: 0; }
+    .sidebar li { margin: 5px 0; }
+    .sidebar li.active { font-weight: bold; }
+    .main { flex: 1; border: 1px solid #ccc; border-radius: 10px; padding: 20px; text-align: center; }
+    .buttons { margin-top: 20px; display: flex; gap: 10px; }
+    button { padding: 8px 16px; border-radius: 10px; border: 1px solid #000; background: white; cursor: pointer; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <h1>3rd Quadrant — Below HP & Behind VP</h1><a href="index.html" style="
+    display: inline-block;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    margin-left: 20px;
+    text-decoration: none;
+    background-color: #0ec58b;
+    border-radius: 5px;
+    font-size: 18px;
+    color: blue;
+    font-weight: 500;"
+    >Back to Home</a>
+  <div class="container">
+    <div class="sidebar">
+      <p><strong>Steps</strong></p>
+      <ul id="stepsList">
+        <li>Draw XY line</li>
+        <li>Draw Below HP dimension line</li>
+        <li>Label Below HP</li>
+        <li>Draw point on Below HP</li>
+        <li>Name the point as a`</li>
+        <li>Draw Behind VP dimension line</li>
+        <li>Label Behind VP</li>
+        <li>Draw point on Behind VP</li>
+        <li>Name the point as a</li>
+        <li>Connect both points with thin line</li>
+      </ul>
+    </div>
+
+    <div class="main">
+      <svg id="diagram" width="450" height="300"></svg>
+      <div id="stepDescription" style="margin-top:10px; font-size:16px;"></div>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button id="prevBtn">Previous</button>
+    <button id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    let step = 0;
+
+    const steps = [
+      "Step 1: Draw XY line",
+      "Step 2: Draw Below HP dimension line",
+      "Step 3: Label Below HP",
+      "Step 4: Draw point on Below HP",
+      "Step 5: Name the point as a`",
+      "Step 6: Draw Behind VP dimension line",
+      "Step 7: Label Behind VP",
+      "Step 8: Draw point on Behind VP",
+      "Step 9: Name the point as a",
+      "Step 10: Connect both points with thin line"
+    ];
+
+    const svg = document.getElementById("diagram");
+    const stepDesc = document.getElementById("stepDescription");
+    const stepList = document.getElementById("stepsList").children;
+
+    function drawStep() {
+      svg.innerHTML = "";
+
+      for(let i=0;i<stepList.length;i++) stepList[i].classList.remove("active");
+      stepList[step].classList.add("active");
+      stepDesc.textContent = steps[step];
+
+      // XY Line
+      if(step >= 0){
+        const xy = document.createElementNS("http://www.w3.org/2000/svg","line");
+        xy.setAttribute("x1","50"); xy.setAttribute("y1","150");
+        xy.setAttribute("x2","400"); xy.setAttribute("y2","150");
+        xy.setAttribute("stroke","black"); xy.setAttribute("stroke-width","2");
+        svg.appendChild(xy);
+
+        const xLabel = document.createElementNS("http://www.w3.org/2000/svg","text");
+        xLabel.setAttribute("x","40"); xLabel.setAttribute("y","145");
+        xLabel.textContent = "X"; svg.appendChild(xLabel);
+
+        const yLabel = document.createElementNS("http://www.w3.org/2000/svg","text");
+        yLabel.setAttribute("x","410"); yLabel.setAttribute("y","145");
+        yLabel.textContent = "Y"; svg.appendChild(yLabel);
+      }
+
+      // Below HP dimension line
+      if(step >= 1){
+        const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+        line.setAttribute("x1","150"); line.setAttribute("y1","150");
+        line.setAttribute("x2","150"); line.setAttribute("y2","230");
+        line.setAttribute("stroke","black"); line.setAttribute("stroke-width","2");
+        svg.appendChild(line);
+
+        const arrowTop = document.createElementNS("http://www.w3.org/2000/svg","polygon");
+        arrowTop.setAttribute("points","150,150 145,160 155,160");
+        arrowTop.setAttribute("fill","black"); svg.appendChild(arrowTop);
+
+        const arrowBottom = document.createElementNS("http://www.w3.org/2000/svg","polygon");
+        arrowBottom.setAttribute("points","150,230 145,220 155,220");
+        arrowBottom.setAttribute("fill","black"); svg.appendChild(arrowBottom);
+      }
+
+      // Label Below HP
+      if(step >= 2){
+        const text = document.createElementNS("http://www.w3.org/2000/svg","text");
+        text.setAttribute("x","130"); text.setAttribute("y","190");
+        text.setAttribute("font-size","12");
+        text.setAttribute("transform","rotate(-90 130,190)");
+        text.textContent = "Below HP";
+        svg.appendChild(text);
+      }
+
+      // Point on Below HP
+      if(step >= 3){
+        const circle = document.createElementNS("http://www.w3.org/2000/svg","circle");
+        circle.setAttribute("cx","200"); circle.setAttribute("cy","230");
+        circle.setAttribute("r","4"); circle.setAttribute("fill","black");
+        svg.appendChild(circle);
+      }
+
+      if(step >= 4){
+        const label = document.createElementNS("http://www.w3.org/2000/svg","text");
+        label.setAttribute("x","210"); label.setAttribute("y","225");
+        label.textContent = "a'";
+        svg.appendChild(label);
+      }
+
+      // Behind VP dimension line
+      if(step >= 5){
+        const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+        line.setAttribute("x1","300"); line.setAttribute("y1","70");
+        line.setAttribute("x2","300"); line.setAttribute("y2","150");
+        line.setAttribute("stroke","black"); line.setAttribute("stroke-width","2");
+        svg.appendChild(line);
+
+        const arrowTop = document.createElementNS("http://www.w3.org/2000/svg","polygon");
+        arrowTop.setAttribute("points","300,70 295,80 305,80");
+        arrowTop.setAttribute("fill","black"); svg.appendChild(arrowTop);
+
+        const arrowBottom = document.createElementNS("http://www.w3.org/2000/svg","polygon");
+        arrowBottom.setAttribute("points","300,150 295,140 305,140");
+        arrowBottom.setAttribute("fill","black"); svg.appendChild(arrowBottom);
+      }
+
+      // Label Behind VP
+      if(step >= 6){
+        const text = document.createElementNS("http://www.w3.org/2000/svg","text");
+        text.setAttribute("x","320"); text.setAttribute("y","110");
+        text.setAttribute("font-size","12");
+        text.setAttribute("transform","rotate(-90 320,110)");
+        text.textContent = "Behind VP";
+        svg.appendChild(text);
+      }
+
+      // Point on Behind VP
+      if(step >= 7){
+        const circle = document.createElementNS("http://www.w3.org/2000/svg","circle");
+        circle.setAttribute("cx","200"); circle.setAttribute("cy","70");
+        circle.setAttribute("r","4"); circle.setAttribute("fill","black");
+        svg.appendChild(circle);
+      }
+
+      if(step >= 8){
+        const label = document.createElementNS("http://www.w3.org/2000/svg","text");
+        label.setAttribute("x","210"); label.setAttribute("y","65");
+        label.textContent = "a";
+        svg.appendChild(label);
+      }
+
+      // Connect line
+      if(step >= 9){
+        const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+        line.setAttribute("x1","200"); line.setAttribute("y1","230");
+        line.setAttribute("x2","200"); line.setAttribute("y2","70");
+        line.setAttribute("stroke","black"); line.setAttribute("stroke-width","1");
+        svg.appendChild(line);
+      }
+    }
+
+    document.getElementById("nextBtn").addEventListener("click",()=>{ if(step < 9){ step++; drawStep(); }});
+    document.getElementById("prevBtn").addEventListener("click",()=>{ if(step > 0){ step--; drawStep(); }});
+
+    drawStep();
+  </script>
+</body>
+</html>

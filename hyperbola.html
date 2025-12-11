@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Conic Sections: Parabola</title>
+<title>Conic Sections: Hyperbola</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
     body {
@@ -57,8 +57,8 @@
 </head>
 <body>
 
-<h2>Conic Sections: Parabola
-<a href="index.html" style="
+<h2>Conic Sections: Hyperbola
+    <a href="index.html" style="
     display: inline-block;
     margin-left: 20px;
     margin-bottom: 20px;
@@ -72,9 +72,9 @@
     font-weight: 500;"
     >Back to Home</a>
 </h2>
-<p style="text-align: center;">Question: Construct an parabola given the distance of the focus from the directrix as 60 mm and eccentricity as 3/3.</p>
+<p>Question: Construct an parabola given the distance of the focus from the directrix as 60 mm and Hyperbola as 3/2.</p>
 
-<div class="ecc">Eccentricity: <span class="label">e = 1</span></div>
+<div class="ecc">Eccentricity: <span class="label">e = 3/2</span></div>
 
 <div class="navButtons">
     <button id="prevBtn">Previous Step</button>
@@ -102,7 +102,7 @@
   const OFFSET_COUNT = 7;
   const EXTEND_DIST_MM = 200;
   const ANGLE_DEG = 25;
-  const POINT_COUNT = 6;
+  const POINT_COUNT = 5;  // changed from 6 → 5 points
 
   const leftA_x = 120;
   const rightA_x = canvas.width - 120;
@@ -117,16 +117,16 @@
     "Draw directrix DD vertically.",
     "Mark focus F at 60MM from directrix.",
     "From left A draw inclined line at 25°.",
-    "Mark points 1–6 along inclined line.",
-    "Join point 6 to F.",
-    "From points 1–5 draw parallels to axis.  Vertex V is where the 3rd parallel line intersects the axis.",
+    "Mark points 1–5 along inclined line.",
+    "Join point 5 to F.",
+    "From points 1–5 draw parallels to axis. Vertex V is where the 2nd parallel line intersects the axis.",
     "Draw vertical from V and arc to find G.",
     "Join A to G and extend.",
     "Draw vertical lines at 5 mm offset.",
     "Mark 1',2',… where verticals meet AG.",
     "Mark 1'',2'',… where verticals meet axis.",
     "Measure pair distances & draw arcs.",
-    "Connect arcs smoothly to sketch parabola.",
+    "Connect arcs smoothly to sketch hyperbola.",
     "Draw 60MM dimension line."
   ];
 
@@ -192,17 +192,17 @@
       }
     }
 
-    // p6 for step 6
-    let p6 = null;
-    if(step >= 6 && inclinePts.length>=6){
-      p6 = inclinePts[5];
+    // p5 for step 6
+    let p5 = null;
+    if(step >= 6 && inclinePts.length>=5){
+      p5 = inclinePts[4];
     }
 
     // axisIntersects and V (used later)
     let axisIntersects = [];
     let V = null;
-    if(step >= 7 && p6){
-      const v={x:F.x-p6.x,y:F.y-p6.y};
+    if(step >= 7 && p5){
+      const v={x:F.x-p5.x,y:F.y-p5.y};
       const m=Math.hypot(v.x,v.y);
       const dir={x:v.x/m,y:v.y/m};
 
@@ -215,7 +215,7 @@
         }
       }
 
-      const vpt = axisIntersects[2];
+      const vpt = axisIntersects[1];  // changed from [2] to [1]
       if(vpt){
         V=vpt;
       }
@@ -296,15 +296,15 @@
       ctx.stroke();
     }
 
-    // Step 6: join point 6 to F (yellow)
-    if(step >= 6 && p6){
+    // Step 6: join point 5 to F (yellow)
+    if(step >= 6 && p5){
       ctx.strokeStyle="yellow";
-      ctx.beginPath(); ctx.moveTo(p6.x,p6.y); ctx.lineTo(F.x,F.y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(p5.x,p5.y); ctx.lineTo(F.x,F.y); ctx.stroke();
     }
 
     // Step 7: parallels from points 1–5 to axis (yellow)
-    if(step >= 7 && p6){
-      const v={x:F.x-p6.x,y:F.y-p6.y};
+    if(step >= 7 && p5){
+      const v={x:F.x-p5.x,y:F.y-p5.y};
       const m=Math.hypot(v.x,v.y);
       const dir={x:v.x/m,y:v.y/m};
 
@@ -407,14 +407,15 @@
         const p = inclinePts[i];
         ctx.fillStyle="black";
         ctx.beginPath(); ctx.arc(p.x,p.y,3,0,2*Math.PI); ctx.fill();
-        addLabel(i+1, p.x+6, p.y-10);
+        // shifted labels slightly left to avoid overlap
+        addLabel(i+1, p.x - 10, p.y-10);
       }
     }
 
-    // Step 6: mark p6 (black)
-    if(step >= 6 && p6){
+    // Step 6: mark p5 (black)
+    if(step >= 6 && p5){
       ctx.fillStyle="black";
-      ctx.beginPath(); ctx.arc(p6.x,p6.y,3,0,2*Math.PI); ctx.fill();
+      ctx.beginPath(); ctx.arc(p5.x,p5.y,3,0,2*Math.PI); ctx.fill();
     }
 
     // Step 7: mark V (vertex) black dot and label
@@ -470,63 +471,50 @@
       }
     }
 
-    /* --------------------
-       STEP 14 — Smooth curve
-       -------------------- */
-    if (step >= 14) {
-      ctx.strokeStyle = "red";
-      ctx.lineWidth = 3;
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
 
-      const upper = [];
-      const lower = [];
+   /* --------------------
+   STEP 14 — Draw smooth hyperbola (FULLY smooth from V)
+   -------------------- */
 
-      if (!V || !F) {
-        // nothing to draw if vertex or focus missing
-      } else {
-        const startX = V.x;
-        const endX = V.x + mm2px(OFFSET_STEP_MM * OFFSET_COUNT);
-        const sampleCount = 80; // increase for smoother result
+/* --------------------
+ STEP 14 — Smooth curved hyperbola, emphasis near V
+-------------------- */
 
-        // Force exact vertex as the first point for both branches
-        upper.push({ x: V.x, y: V.y });
-        lower.push({ x: V.x, y: V.y });
+if (step >= 14) {
+  if (!V || upperPts.length === 0 || lowerPts.length === 0) return;
 
-        for (let i = 1; i <= sampleCount; i++) {
-          const t = i / sampleCount;
-          const x = startX + t * (endX - startX);
+  ctx.strokeStyle = "red";
+  ctx.lineWidth = 3;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
 
-          // distance to directrix (vertical line at leftA_x)
-          const d = Math.abs(x - leftA_x);
-          const dx = x - F.x;
-          const inside = d * d - dx * dx;
-          if (inside < 0) {
-            // numerical safety: skip if invalid
-            continue;
-          }
-          const s = Math.sqrt(inside);
+  // --- Combine points for a single continuous curve ---
+  // Upper points descending to vertex
+  const combinedPoints = [...upperPts.reverse(), V, ...lowerPts];
 
-          // compute exact parabola points (upper = smaller y, lower = larger y)
-          upper.push({ x, y: F.y - s });
-          lower.push({ x, y: F.y + s });
-        }
-
-        // ensure strictly left->right order
-        upper.sort((a, b) => a.x - b.x);
-        lower.sort((a, b) => a.x - b.x);
-
-        // draw separately (prevents fill)
-        if (upper.length >= 2) drawSmooth(upper);
-        if (lower.length >= 2) drawSmooth(lower);
-
-        // visible vertex marker
-        ctx.fillStyle = "red";
-        ctx.beginPath();
-        ctx.arc(V.x, V.y, 5, 0, 2 * Math.PI);
-        ctx.fill();
-      }
+  // --- Smooth quadratic curve ---
+  function drawSmoothCurve(pts) {
+    if (pts.length < 2) return;
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < pts.length - 1; i++) {
+      const midX = (pts[i].x + pts[i+1].x) / 2;
+      const midY = (pts[i].y + pts[i+1].y) / 2;
+      ctx.quadraticCurveTo(pts[i].x, pts[i].y, midX, midY);
     }
+    ctx.lineTo(pts[pts.length-1].x, pts[pts.length-1].y);
+    ctx.stroke();
+  }
+
+  drawSmoothCurve(combinedPoints);
+
+  // --- Vertex marker ---
+  ctx.fillStyle = "red";
+  ctx.beginPath();
+  ctx.arc(V.x, V.y, 6, 0, 2 * Math.PI);
+  ctx.fill();
+}
+
 
     if (step === 15) {
       const dimLineY = bottomMargin - 5;
